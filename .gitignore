@@ -1,6 +1,6 @@
 .texpadtmp
 frames
-.swp
-.csv
-.xlsx
-.txt
+*.swp
+*.csv
+*.xlsx
+*.txt
