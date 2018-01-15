@@ -25,15 +25,17 @@ frame_tstep = 1. / framerate
 
 fig,ax = plt.subplots()
 
-for frame in range(num_frames): # replace range with num_frames
+font = {'weight': 'bold',
+        'fontname': 'Arial'
+        }
+
+for frame in range(num_frames): # replace range with num_frames when not testing
     ax.cla()
     
     # Plot properties
-    ax.set(\
-        xlabel = 'Time (s)',\
-        ylabel = 'Thrust (lbf)',\
-        title = 'Thrust versus Time',\
-        )
+    plt.xlabel('Time (s)', fontdict = font)
+    plt.ylabel('Thrust (lbf)', fontdict = font)
+    plt.title('Thrust versus Time', fontdict = font)
     ax.set_xlim(0, t_end - t_start)
     ax.set_ylim(0, np.ceil(max(ys)/100) * 100)
     ax.grid()
@@ -43,7 +45,7 @@ for frame in range(num_frames): # replace range with num_frames
     frameindex = int(round(frametime / t_delta))
     ax.plot(xs[0:frameindex],ys[0:frameindex], 'r', linewidth = 3)
     
-    fig.savefig('frames/frame_' + str(frame) + '.png')
+    fig.savefig('frames/frame_' + str(frame) + '.png', dpi = 200)
 
     print('saved frame',frame)
 
