@@ -15,3 +15,5 @@ The script reads in a csv file containing the appropriate data. As a user, you n
 Possible future developments:
 
 - Add flexibility for other timescale orders (ie, user-specified rate of time evolution)
+
+An example of the result can be seen in [this video](https://youtu.be/xugzcG_lRMA "Waterloo Rocketry STF 8")
