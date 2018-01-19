@@ -5,9 +5,10 @@ data = np.loadtxt('data.csv',delimiter = ',',skiprows = 1,usecols = [0,5])
 data[:,1] = data[:,1]*0.88 # Scaling thrust data because of a weird result
 
 # User-inputted parameters
-t_start = 382 # seconds
-t_end = 410 # seconds
-framerate = 30 # frames per second
+t_start = 382 # In the same time units as your data
+t_end = 410 # In the same time units as your data
+anim_scale = 1 # Scaling for animation speed, ie seconds of animation per data-time unit.
+framerate = 30 # frames per second of animation
 
 # Preparing cropped list of x values
 t_delta = data[1,0] - data[0,0]
@@ -16,18 +17,20 @@ xs = np.arange(0,t_domain,t_delta)
 
 # Preparing cropped list of y values
 t_start_index = int(round((t_start - data[0,0]) / t_delta))
-total_num_indices = int(round(((t_end - t_start)/t_delta))) + 1
+total_num_indices = int(round(t_domain/t_delta)) + 1
 t_end_index = t_start_index + total_num_indices
 ys = data[t_start_index:t_end_index,1]
 
-num_frames = t_domain * framerate
-frame_tstep = 1. / framerate
+num_frames = t_domain * framerate * anim_scale
+frame_tstep = 1. / framerate # How much animation-time passes per frame
 
 fig,ax = plt.subplots()
 
 font = {'weight': 'bold',
         'fontname': 'Arial'
         }
+
+print('outputting',num_frames,'frame(s)')
 
 for frame in range(num_frames): # replace range with num_frames when not testing
     ax.cla()
@@ -42,7 +45,7 @@ for frame in range(num_frames): # replace range with num_frames when not testing
     
     # Plotting
     frametime = frame_tstep * frame
-    frameindex = int(round(frametime / t_delta))
+    frameindex = int(round(frametime / (anim_scale * t_delta)))
     ax.plot(xs[0:frameindex],ys[0:frameindex], 'r', linewidth = 3)
     
     fig.savefig('frames/frame_' + str(frame) + '.png', dpi = 200)
