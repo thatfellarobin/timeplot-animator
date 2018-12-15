@@ -6,7 +6,7 @@ data = np.loadtxt('data.csv',delimiter = ',',skiprows = 1,usecols = [0,1])
 
 # User-inputted parameters
 t_start = 2505 # In the same time units as your data
-t_end = 2506 # In the same time units as your data
+t_end = 2506.5 # In the same time units as your data
 anim_scale = 1 # Scaling for animation speed, ie seconds of animation per data-time unit.
 framerate = 30 # frames per second of animation
 

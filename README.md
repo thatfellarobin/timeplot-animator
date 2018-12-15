@@ -9,11 +9,16 @@ The script reads in a csv file containing the appropriate data. As a user, you n
 - Make sure it's reading the file you want, the way you want (appropriate rows ignored and columns grabbed)
 - Ensure that the start time and end time are correct
 - Enter the targeted video framerate
-- Enter the appropriate scaling factor
+- Enter the appropriate scaling factor (you'd use this if the time units of your data aren't seconds and/or if your playback rate isn't real time. A value of 1 means one second of animation for one unit of data.)
 
+Some assumptions made about the data:
+- The timestep between measurements is constant, there is no variable frsampling frequency during data collection
 
 Possible future developments:
 
 - Prettier graphs
+- Built-in interpolation, when you want to make a smoother graph from choppy data
+- Built-in smoothing for noise data
+- GUI
 
-An example of the result can be seen in [this video](https://youtu.be/xugzcG_lRMA "Waterloo Rocketry STF 8")
+An example of the result can be seen in [this video](https://www.youtube.com/watch?v=liMpHmOH-Bc "UXO - Kismet Static Fire #2")
