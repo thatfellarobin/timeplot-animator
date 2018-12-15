@@ -1,7 +1,7 @@
 # timeplot-animator
 If a plot has time on the x-axis, this script can produce the necessary video frames to animate the plot as time evolves.
 
-This was originally developed to animate the burn sequence of a rocket engine.
+This was originally developed to animate the burn sequence of a rocket engine. That's why the python script is called burnanimator.py
 
 The script reads in a csv file containing the appropriate data. As a user, you need only to:
 
@@ -12,7 +12,9 @@ The script reads in a csv file containing the appropriate data. As a user, you n
 - Enter the appropriate scaling factor (you'd use this if the time units of your data aren't seconds and/or if your playback rate isn't real time. A value of 1 means one second of animation for one unit of data.)
 
 Some assumptions made about the data:
+
 - The timestep between measurements is constant, there is no variable frsampling frequency during data collection
+- The data is comma-separated
 
 Possible future developments:
 
