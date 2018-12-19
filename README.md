@@ -15,7 +15,7 @@ The script reads in a csv file containing the appropriate data. As a user, you n
 
 Some assumptions made about the data:
 
-- The timestep between measurements is constant, there is no variable frsampling frequency during data collection
+- The timestep between measurements is constant, there is no variable sampling frequency during data collection
 - The data is comma-separated
 
 Possible future developments:
