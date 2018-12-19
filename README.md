@@ -10,6 +10,8 @@ The script reads in a csv file containing the appropriate data. As a user, you n
 - Ensure that the start time and end time are correct
 - Enter the targeted video framerate
 - Enter the appropriate scaling factor (you'd use this if the time units of your data aren't seconds and/or if your playback rate isn't real time. A value of 1 means one second of animation for one unit of data.)
+- Indicate in the code if interpolation and/or smoothing should be performed on the data.
+- Note: I haven't actually tested the smoothing yet. Unknown if it works.
 
 Some assumptions made about the data:
 
@@ -19,8 +21,6 @@ Some assumptions made about the data:
 Possible future developments:
 
 - Prettier graphs
-- Built-in interpolation, when you want to make a smoother graph from choppy data
-- Built-in smoothing for noise data
 - GUI
 
 An example of the result can be seen in [this video](https://www.youtube.com/watch?v=liMpHmOH-Bc "UXO - Kismet Static Fire #2")
