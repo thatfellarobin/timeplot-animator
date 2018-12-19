@@ -50,7 +50,9 @@ num_frames = int(t_domain * framerate * animation_scale)
 frame_tstep = 1. / framerate # How much animation-time passes per frame
 
 if run_smooth:
-    smoothing_window = max(2*len(xs)/num_frames,10)
+    smoothing_window = min(4,2*len(xs)/num_frames,10)
+    if smoothing_window <= 4:
+        print("warning: small smoothing window")
     # ys = savitzky_golay(ys, window=smoothing_window, order=3)
     ys = signal.savgol_filter(ys, window_length=smoothing_window, polyorder=3)
 
