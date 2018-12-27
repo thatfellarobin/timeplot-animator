@@ -3,14 +3,14 @@ from scipy import interpolate, signal
 import matplotlib.pyplot as plt
 import os
 
-data = np.loadtxt('data.csv',delimiter = ',',skiprows = 1,usecols = [0,1])
+data = np.loadtxt('randsin0_5.csv',delimiter = ',',skiprows = 1,usecols = [0,1])
 
 # User-inputted parameters
-t_start = 2505 # In the same time units as your data
-t_end = 2515 # In the same time units as your data
+t_start = 0 # In the same time units as your data
+t_end = 5 # In the same time units as your data
 animation_scale = 1 # Scaling for animation speed, ie seconds of animation per data-time unit.
 framerate = 30 # frames per second of animation
-run_smooth = False # If your data is noisy, you can use this to make the data smoother
+run_smooth = True # If your data is noisy, you can use this to make the data smoother
 run_interpolate = False # If your data sample rate is low, you can use this to interpolate intermediate values for smoother animation
 
 # Preparing cropped list of x values
@@ -27,7 +27,8 @@ num_frames = int(t_domain * framerate * animation_scale)
 frame_tstep = 1. / framerate # How much animation-time passes per frame
 
 if run_smooth:
-    smoothing_window = min(4,2*len(xs)/num_frames,12)
+    smoothing_window = int(np.ceil(np.median([4,2*len(xs)/num_frames,12])) // 2 * 2 + 1)
+    print('smoothing with window',smoothing_window)
     if smoothing_window <= 5:
         print("warning: small smoothing window")
     ys = signal.savgol_filter(ys, window_length=smoothing_window, polyorder=3)

@@ -22,5 +22,6 @@ Possible future developments:
 
 - Prettier graphs
 - GUI
+- Export video file directly
 
 An example of the result can be seen in [this video](https://www.youtube.com/watch?v=liMpHmOH-Bc "UXO - Kismet Static Fire #2")
