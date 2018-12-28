@@ -24,3 +24,4 @@ Possible future developments:
 - Export video file directly
 - Variable output image resolution
 - Handle non-constant time deltas between data points (already does if interpolation is used)
+- Graph more than one data sequence at a time
