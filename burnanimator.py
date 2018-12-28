@@ -24,7 +24,7 @@ def find_graphlims(max=10,min=-10):
     else:
         maxlim = np.ceil(max/float(10**maxorder)) * 10**maxorder
         minlim = np.floor(min/float(10**minorder)) * 10**minorder
-    return maxlim, minlim
+    return minlim, maxlim
 
 
 data = np.loadtxt('randsin0_5.csv',delimiter = ',',skiprows = 1,usecols = [0,1])
