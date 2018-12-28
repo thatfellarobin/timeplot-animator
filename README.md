@@ -1,7 +1,7 @@
 # timeplot-animator
 If a plot has time on the x-axis, this script can produce the necessary video frames to animate the plot as time evolves.
 
-This was originally developed to animate the burn sequence of a rocket engine. That's why the python script is called burnanimator.py
+This was originally developed to animate the burn sequence of a rocket engine. That's why the python script is called burnanimator.py. An example of the result can be seen in [this video](https://www.youtube.com/watch?v=liMpHmOH-Bc "UXO - Kismet Static Fire #2")
 
 The script reads in a csv file containing the appropriate data. As a user, you need only to:
 
@@ -23,5 +23,4 @@ Possible future developments:
 - GUI
 - Export video file directly
 - Variable output image resolution
-
-An example of the result can be seen in [this video](https://www.youtube.com/watch?v=liMpHmOH-Bc "UXO - Kismet Static Fire #2")
+- Handle non-constant time deltas between data points
