@@ -17,13 +17,20 @@ def numorder(number):
 def find_graphlims(max=10,min=-10):
     maxorder = numorder(max)
     minorder = numorder(min)
-    if maxorder - minorder >= 3 or max == 0:
+    if maxorder - minorder >= 3:
         minlim = 0
-    elif minorder - maxorder >= 3 or min == 0:
+    elif minorder - maxorder >= 3:
         maxlim = 0
     else:
-        maxlim = np.ceil(max/float(10**maxorder)) * 10**maxorder
-        minlim = np.floor(min/float(10**minorder)) * 10**minorder
+        if max == 0:
+            maxlim = 0
+        else:
+            maxlim = np.ceil(max/float(10**maxorder)) * 10**maxorder
+        if min == 0:
+            minlim = 0
+        else:
+            minlim = np.floor(min/float(10**minorder)) * 10**minorder
+
     return minlim, maxlim
 
 
