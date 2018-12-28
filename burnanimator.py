@@ -30,11 +30,9 @@ def find_graphlims(max=10,min=-10):
             minlim = 0
         else:
             minlim = np.floor(min/float(10**minorder)) * 10**minorder
-
     return minlim, maxlim
 
-
-data = np.loadtxt('randsin0_5.csv',delimiter = ',',skiprows = 1,usecols = [0,1])
+data = np.loadtxt('sparsedata.csv',delimiter = ',',skiprows = 1,usecols = [0,1])
 
 # User-inputted parameters
 t_start = 0 # In the same time units as your data
@@ -77,6 +75,10 @@ fig,ax = plt.subplots()
 font = {'weight': 'bold',
         'fontname': 'Arial'
         }
+
+directory = os.getcwd() + '/frames'
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 for oldFrame in os.listdir('frames'):
     if oldFrame.endswith('.png'):
