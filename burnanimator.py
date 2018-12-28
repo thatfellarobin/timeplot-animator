@@ -3,7 +3,7 @@ from scipy import interpolate, signal
 import matplotlib.pyplot as plt
 import os
 
-def numorder(number):
+def numorder(number): # Finds the order of magnitude of a number
     number = abs(number)
     if number == 0:
         raise Exception('number is 0, has no order!')
@@ -14,7 +14,7 @@ def numorder(number):
         testorder += 1
     return testorder - 1
 
-def find_graphlims(max=10,min=-10):
+def find_graphlims(max=10,min=-10): # Finds appropriate y-axis limits for data
     maxorder = numorder(max)
     minorder = numorder(min)
     if maxorder - minorder >= 3:
@@ -32,7 +32,7 @@ def find_graphlims(max=10,min=-10):
             minlim = np.floor(min/float(10**minorder)) * 10**minorder
     return minlim, maxlim
 
-data = np.loadtxt('sparsedata.csv',delimiter = ',',skiprows = 1,usecols = [0,1])
+
 
 # User-inputted parameters
 t_start = 0 # In the same time units as your data
@@ -41,6 +41,10 @@ animation_scale = 1 # Scaling for animation speed, ie seconds of animation per d
 framerate = 30 # frames per second of animation
 run_smooth = False # If your data is noisy, you can use this to make the data smoother
 run_interpolate = False # If your data sample rate is low, you can use this to interpolate intermediate values for smoother animation
+filename = 'sparsedata.csv'
+
+# Load data
+data = np.loadtxt(filename,delimiter = ',',skiprows = 1,usecols = [0,1])
 
 # Preparing cropped list of x values
 t_delta = data[1,0] - data[0,0]

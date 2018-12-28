@@ -23,4 +23,4 @@ Possible future developments:
 - GUI
 - Export video file directly
 - Variable output image resolution
-- Handle non-constant time deltas between data points
+- Handle non-constant time deltas between data points (already does if interpolation is used)
