@@ -2,6 +2,7 @@ import numpy as np
 from scipy import interpolate, signal
 import matplotlib.pyplot as plt
 import os
+import tkinter as tk
 
 def numorder(number): # Finds the order of magnitude of a number
     number = abs(number)
