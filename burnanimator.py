@@ -3,6 +3,30 @@ from scipy import interpolate, signal
 import matplotlib.pyplot as plt
 import os
 
+def numorder(number):
+    number = abs(number)
+    if number == 0:
+        raise Exception('number is 0, has no order!')
+    testorder = 0
+    while 10**testorder >= number:
+        testorder -= 1
+    while 10**testorder <= number:
+        testorder += 1
+    return testorder - 1
+
+def find_graphlims(max=10,min=-10):
+    maxorder = numorder(max)
+    minorder = numorder(min)
+    if maxorder - minorder >= 3 or max == 0:
+        minlim = 0
+    elif minorder - maxorder >= 3 or min == 0:
+        maxlim = 0
+    else:
+        maxlim = np.ceil(max/float(10**maxorder)) * 10**maxorder
+        minlim = np.floor(min/float(10**minorder)) * 10**minorder
+    return maxlim, minlim
+
+
 data = np.loadtxt('randsin0_5.csv',delimiter = ',',skiprows = 1,usecols = [0,1])
 
 # User-inputted parameters
@@ -10,7 +34,7 @@ t_start = 0 # In the same time units as your data
 t_end = 5 # In the same time units as your data
 animation_scale = 1 # Scaling for animation speed, ie seconds of animation per data-time unit.
 framerate = 30 # frames per second of animation
-run_smooth = True # If your data is noisy, you can use this to make the data smoother
+run_smooth = False # If your data is noisy, you can use this to make the data smoother
 run_interpolate = False # If your data sample rate is low, you can use this to interpolate intermediate values for smoother animation
 
 # Preparing cropped list of x values
@@ -57,11 +81,12 @@ for frame in range(num_frames): # replace range with num_frames when not testing
     ax.cla()
 
     # Plot properties
-    plt.xlabel('Time (s)', fontdict = font)
-    plt.ylabel('Thrust (lbf)', fontdict = font)
-    plt.title('Thrust versus Time', fontdict = font)
-    ax.set_xlim(0, t_end - t_start)
-    ax.set_ylim(0, np.ceil(max(ys)/100) * 100)
+    plt.xlabel('Time', fontdict = font)
+    plt.ylabel('Data', fontdict = font)
+    plt.title('Data versus Time', fontdict = font)
+    ax.set_xlim(0, t_domain)
+    ax.set_ylim(find_graphlims(max=np.max(ys),min=np.min(ys)))
+    # ax.set_ylim(0, np.ceil(max(ys)/100) * 100)
     ax.grid()
 
     # Plotting
