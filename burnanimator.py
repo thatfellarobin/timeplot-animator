@@ -33,6 +33,12 @@ def find_graphlims(max=10,min=-10): # Finds appropriate y-axis limits for data
             minlim = np.floor(min/float(10**minorder)) * 10**minorder
     return minlim, maxlim
 
+# GUI Setup
+root = tk.Tk()
+root.title('Timeplot Animator')
+main_frame = Frame(root)
+root.mainloop()
+
 # User-Input parameters
 t_start = 0 # In the same time units as your data
 t_end = 5 # In the same time units as your data
