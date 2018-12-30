@@ -14,28 +14,52 @@ graph_xlabel = tk.StringVar()
 
 root.title('Timeplot Animator')
 
+# General Parameters
 param_frame = tk.Frame(root)
 param_frame.grid(row=0,column=0)
 param_label = tk.Label(param_frame, text='General Parameters', width=40)
-param_label.pack()
+t_start_label = tk.Label(param_frame, text='Start Time (data units)')
+t_start_field = tk.Entry(param_frame)
+t_end_label = tk.Label(param_frame, text='End Time (data units)')
+t_end_field = tk.Entry(param_frame)
+anim_scale_label = tk.Label(param_frame, text='Animation Scale')
+anim_scale_field = tk.Entry(param_frame)
+framerate_label = tk.Label(param_frame, text='Animation Framerate')
+framerate_field = tk.Entry(param_frame)
 
+param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
+t_start_label.grid(row=1, column=0, sticky=tk.W)
+t_start_field.grid(row=1, column=1)
+t_end_label.grid(row=2, column=0, sticky=tk.W)
+t_end_field.grid(row=2, column=1)
+anim_scale_label.grid(row=3, column=0, sticky=tk.W)
+anim_scale_field.grid(row=3, column=1)
+framerate_label.grid(row=4, column=0, sticky=tk.W)
+framerate_field.grid(row=4, column=1)
+
+# Smoothing
 smoothing_frame = tk.Frame(root)
-smoothing_frame.grid(row=1,column=0)
+smoothing_frame.grid(row=1, column=0)
 smoothing_label = tk.Label(smoothing_frame, text='Smoothing')
 smoothing_check = tk.Checkbutton(smoothing_frame,text='Apply Smoothing',variable=run_smooth)
-smoothing_check.pack()
-smoothing_label.pack()
 
+smoothing_label.pack(anchor=tk.W)
+smoothing_check.pack()
+
+# Interpolation
 interp_frame = tk.Frame(root)
-interp_frame.grid(row=2,column=0)
+interp_frame.grid(row=2, column=0)
 interp_label = tk.Label(interp_frame, text='Interpolation')
 interp_check = tk.Checkbutton(interp_frame,text='Apply Interpolation',variable=run_interpolate)
-interp_check.pack()
-interp_label.pack()
 
+interp_label.pack(anchor=tk.W)
+interp_check.pack()
+
+# Preview
 preview_frame = tk.Frame(root)
 preview_frame.grid(row=0,column=1)
 preview_label = tk.Label(preview_frame, text='Plot Preview (final frame)')
+
 preview_label.pack()
 
 tk.mainloop()
