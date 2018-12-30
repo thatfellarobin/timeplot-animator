@@ -49,6 +49,7 @@ run_interpolate = False # If your data sample rate is low, you can use this to i
 filename = 'data.csv'
 
 # Other potential user-input parameters:
+# - Data file parameters (delimiter, skiprows, usecols)
 # - Smoothing window
 # - Smoothing polynomial order
 # - Interpolation kind
