@@ -2,6 +2,7 @@ import numpy as np
 from scipy import interpolate, signal
 import matplotlib.pyplot as plt
 import os
+import tkinter as tk
 
 def numorder(number): # Finds the order of magnitude of a number
     number = abs(number)
@@ -32,16 +33,24 @@ def find_graphlims(max=10,min=-10): # Finds appropriate y-axis limits for data
             minlim = np.floor(min/float(10**minorder)) * 10**minorder
     return minlim, maxlim
 
+# GUI Setup
 
-
-# User-inputted parameters
+# User-Input parameters
 t_start = 0 # In the same time units as your data
 t_end = 5 # In the same time units as your data
 animation_scale = 1 # Scaling for animation speed, ie seconds of animation per data-time unit.
 framerate = 30 # frames per second of animation
 run_smooth = False # If your data is noisy, you can use this to make the data smoother
 run_interpolate = False # If your data sample rate is low, you can use this to interpolate intermediate values for smoother animation
-filename = 'sparsedata.csv'
+filename = 'data.csv'
+
+# Other potential user-input parameters:
+# - Data file parameters (delimiter, skiprows, usecols)
+# - Smoothing window
+# - Smoothing polynomial order
+# - Interpolation kind
+# - Graph titles and axis labels
+# - Other graph appearance (fonts, colours, styles)
 
 # Load data
 data = np.loadtxt(filename,delimiter = ',',skiprows = 1,usecols = [0,1])
