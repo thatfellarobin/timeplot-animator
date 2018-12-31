@@ -8,7 +8,7 @@ The script reads in a csv file containing the appropriate data. Column 0 should 
 
 Running timeplot_animator.py should open a GUI. Here's a quick reference:
 
-![alt text](https://github.com/thatfellarobin/timeplot-animator/blob/gui/keyCAD_timeplotanim/keyCAD_timeplotanim.001.jpeg "WHAT DOES UR GUI MEAN BRO")
+![if u see dis da image is broken lmao](https://github.com/thatfellarobin/timeplot-animator/blob/master/keyCAD_timeplotanim/keyCAD_timeplotanim.001.jpeg "WHAT DOES UR GUI MEAN BRO")
 
 ## Possible future developments:
 - Prettier graphs
