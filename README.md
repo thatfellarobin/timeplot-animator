@@ -12,6 +12,7 @@ Running timeplot_animator.py should open a GUI. Here's a quick reference:
 
 ## Possible future developments:
 - Prettier graphs
+- Prettier GUI
 - GUI allows control of more parameters
 - Export video file directly
 - Handle non-constant time deltas between data points (already does if interpolation is used)
