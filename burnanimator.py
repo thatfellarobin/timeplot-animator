@@ -34,10 +34,6 @@ def find_graphlims(max=10,min=-10): # Finds appropriate y-axis limits for data
     return minlim, maxlim
 
 # GUI Setup
-root = tk.Tk()
-root.title('Timeplot Animator')
-main_frame = Frame(root)
-root.mainloop()
 
 # User-Input parameters
 t_start = 0 # In the same time units as your data
