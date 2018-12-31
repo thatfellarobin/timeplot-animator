@@ -1,4 +1,11 @@
+import numpy as np
+from scipy import interpolate, signal
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt # https://github.com/MTG/sms-tools/issues/36
+import os
 import tkinter as tk
+from plot_anim_functions import *
 
 root = tk.Tk()
 
@@ -64,7 +71,7 @@ preview_label.pack()
 
 # Execution
 execution_frame = tk.Frame(root)
-execution_button = tk.Button(execution_frame, text='Generate Animation')
+execution_button = tk.Button(execution_frame, text='Generate Animation', command=test)
 
 execution_frame.grid(row=3, column=0, columnspan=2)
 execution_button.pack()
