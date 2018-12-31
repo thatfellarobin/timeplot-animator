@@ -5,7 +5,7 @@ matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt # https://github.com/MTG/sms-tools/issues/36
 import os
 import tkinter as tk
-from plot_anim_functions import *
+from pltanim_func import *
 
 root = tk.Tk()
 
@@ -66,7 +66,7 @@ preview_label.pack()
 execution_frame = tk.Frame(root)
 execution_button = tk.Button(execution_frame,
     text='Generate Animation',
-    command=lambda : plotting_execution(t_start_field,t_end_field,anim_scale_field,framerate_field,run_smooth,run_interpolate,smoothing_check,interp_check))
+    command=lambda : plotting_execution(t_start_field,t_end_field,anim_scale_field,framerate_field,run_smooth,run_interpolate))
 
 execution_frame.grid(row=3, column=0, columnspan=2)
 execution_button.pack()
