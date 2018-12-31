@@ -27,7 +27,7 @@ anim_scale_field = tk.Entry(param_frame)
 framerate_label = tk.Label(param_frame, text='Animation Framerate')
 framerate_field = tk.Entry(param_frame)
 
-param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
+param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W) # Not working as expected
 t_start_label.grid(row=1, column=0, sticky=tk.W)
 t_start_field.grid(row=1, column=1)
 t_end_label.grid(row=2, column=0, sticky=tk.W)
@@ -43,7 +43,7 @@ smoothing_frame.grid(row=1, column=0)
 smoothing_label = tk.Label(smoothing_frame, text='Smoothing')
 smoothing_check = tk.Checkbutton(smoothing_frame,text='Apply Smoothing',variable=run_smooth)
 
-smoothing_label.pack(anchor=tk.W)
+smoothing_label.pack(anchor=tk.W) # Not working as expected
 smoothing_check.pack()
 
 # Interpolation
@@ -52,15 +52,22 @@ interp_frame.grid(row=2, column=0)
 interp_label = tk.Label(interp_frame, text='Interpolation')
 interp_check = tk.Checkbutton(interp_frame,text='Apply Interpolation',variable=run_interpolate)
 
-interp_label.pack(anchor=tk.W)
+interp_label.pack(anchor=tk.W) # Not working as expected
 interp_check.pack()
 
-# Preview
+# Graph Preview
 preview_frame = tk.Frame(root)
-preview_frame.grid(row=0,column=1)
+preview_frame.grid(row=0, column=1, rowspan=3)
 preview_label = tk.Label(preview_frame, text='Plot Preview (final frame)')
 
 preview_label.pack()
+
+# Execution
+execution_frame = tk.Frame(root)
+execution_button = tk.Button(execution_frame, text='Generate Animation')
+
+execution_frame.grid(row=3, column=0, columnspan=2)
+execution_button.pack()
 
 tk.mainloop()
 
@@ -68,3 +75,4 @@ tk.mainloop()
 # - explanation under each section label
 # - Organize frames by grid, with proper sizing
 # - Figure out how to use field entries
+# - Data preview?
