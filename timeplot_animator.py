@@ -20,7 +20,7 @@ param_frame.grid(row=0,column=0)
 param_label = tk.Label(param_frame,
     text='General Parameters',
     font='Helvetica 16 bold',
-    width=40,
+    width=40, # Not sure why I need the width to left justify
     anchor=tk.W)
 t_start_label = tk.Label(param_frame, text='Start Time (data units)')
 t_start_field = tk.Entry(param_frame)
@@ -47,7 +47,7 @@ smoothing_frame.grid(row=1, column=0)
 smoothing_label = tk.Label(smoothing_frame,
     text='Smoothing',
     font='Helvetica 16 bold',
-    width=40,
+    width=40, # Not sure why I need the width to left justify
     anchor=tk.W)
 smoothing_check = tk.Checkbutton(smoothing_frame,text='Apply Smoothing',variable=run_smooth)
 
@@ -60,7 +60,7 @@ interp_frame.grid(row=2, column=0)
 interp_label = tk.Label(interp_frame,
     text='Interpolation',
     font='Helvetica 16 bold',
-    width=40,
+    width=40, # Not sure why I need the width to left justify
     anchor=tk.W)
 interp_check = tk.Checkbutton(interp_frame,text='Apply Interpolation',variable=run_interpolate)
 
@@ -69,10 +69,14 @@ interp_check.pack()
 
 # Graph Preview
 preview_frame = tk.Frame(root)
-preview_frame.grid(row=0, column=1, rowspan=3)
-preview_label = tk.Label(preview_frame, text='Plot Preview (final frame)')
+preview_label = tk.Label(preview_frame,
+    text='Plot Preview (final frame)',
+    font='Helvetica 16 bold',
+    width=50,
+    anchor=tk.N)
 
-preview_label.pack(anchor=tk.N)
+preview_frame.grid(row=0, column=1, rowspan=3, sticky=tk.N)
+preview_label.pack(fill='y') # Not working as expected
 
 # Execution
 execution_frame = tk.Frame(root)
