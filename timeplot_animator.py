@@ -80,12 +80,15 @@ preview_label.pack(fill='y') # Not working as expected
 
 # Execution
 execution_frame = tk.Frame(root)
+preview_button = tk.Button(execution_frame,
+    text='Generate Plot Preview')
 execution_button = tk.Button(execution_frame,
     text='Generate Animation',
     command=lambda : plotting_execution(t_start_field,t_end_field,anim_scale_field,framerate_field,run_smooth,run_interpolate))
 
 execution_frame.grid(row=3, column=0, columnspan=2)
-execution_button.pack()
+preview_button.grid(row=0,column=0,padx=5,pady=5)
+execution_button.grid(row=0,column=1,padx=5,pady=5)
 
 tk.mainloop()
 
