@@ -17,7 +17,11 @@ root.title('Timeplot Animator')
 # General Parameters
 param_frame = tk.Frame(root)
 param_frame.grid(row=0,column=0)
-param_label = tk.Label(param_frame, text='General Parameters', width=40)
+param_label = tk.Label(param_frame,
+    text='General Parameters',
+    font='Helvetica 16 bold',
+    width=40,
+    anchor=tk.W)
 t_start_label = tk.Label(param_frame, text='Start Time (data units)')
 t_start_field = tk.Entry(param_frame)
 t_end_label = tk.Label(param_frame, text='End Time (data units)')
@@ -27,7 +31,7 @@ anim_scale_field = tk.Entry(param_frame)
 framerate_label = tk.Label(param_frame, text='Animation Framerate')
 framerate_field = tk.Entry(param_frame)
 
-param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W) # Not working as expected
+param_label.grid(row=0, column=0, columnspan=2) # Not working as expected
 t_start_label.grid(row=1, column=0, sticky=tk.W)
 t_start_field.grid(row=1, column=1)
 t_end_label.grid(row=2, column=0, sticky=tk.W)
@@ -40,16 +44,24 @@ framerate_field.grid(row=4, column=1)
 # Smoothing
 smoothing_frame = tk.Frame(root)
 smoothing_frame.grid(row=1, column=0)
-smoothing_label = tk.Label(smoothing_frame, text='Smoothing')
+smoothing_label = tk.Label(smoothing_frame,
+    text='Smoothing',
+    font='Helvetica 16 bold',
+    width=40,
+    anchor=tk.W)
 smoothing_check = tk.Checkbutton(smoothing_frame,text='Apply Smoothing',variable=run_smooth)
 
-smoothing_label.pack(anchor=tk.W) # Not working as expected
-smoothing_check.pack()
+smoothing_label.grid(row=0,column=0,sticky='W') # Not working as expected
+smoothing_check.grid(row=1,column=0)
 
 # Interpolation
 interp_frame = tk.Frame(root)
 interp_frame.grid(row=2, column=0)
-interp_label = tk.Label(interp_frame, text='Interpolation')
+interp_label = tk.Label(interp_frame,
+    text='Interpolation',
+    font='Helvetica 16 bold',
+    width=40,
+    anchor=tk.W)
 interp_check = tk.Checkbutton(interp_frame,text='Apply Interpolation',variable=run_interpolate)
 
 interp_label.pack(anchor=tk.W) # Not working as expected
@@ -60,7 +72,7 @@ preview_frame = tk.Frame(root)
 preview_frame.grid(row=0, column=1, rowspan=3)
 preview_label = tk.Label(preview_frame, text='Plot Preview (final frame)')
 
-preview_label.pack()
+preview_label.pack(anchor=tk.N)
 
 # Execution
 execution_frame = tk.Frame(root)
