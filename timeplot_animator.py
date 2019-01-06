@@ -10,6 +10,8 @@ from matplotlib import pyplot as plt  # https://github.com/MTG/sms-tools/issues/
 
 class MainApplication:
     def __init__(self, master):
+        run_smooth = tk.IntVar()
+        run_interpolate = tk.IntVar()
         master.title('Timeplot Animator')
 
         # General Parameters
