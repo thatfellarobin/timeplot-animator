@@ -1,4 +1,4 @@
-from pltanim_func import *
+# from pltanim_func import *
 import tkinter as tk
 import os
 import numpy as np
@@ -10,90 +10,96 @@ from matplotlib import pyplot as plt  # https://github.com/MTG/sms-tools/issues/
 
 class MainApplication:
     def __init__(self, master):
-        run_smooth = tk.IntVar()
-        run_interpolate = tk.IntVar()
+
         master.title('Timeplot Animator')
 
         # General Parameters
-        param_frame = tk.Frame(master)
-        param_frame.grid(row=0, column=0)
-        param_label = tk.Label(param_frame,
+        self.param_frame = tk.Frame(master)
+        self.param_frame.grid(row=0, column=0)
+        self.param_label = tk.Label(self.param_frame,
             text='General Parameters',
             font='Helvetica 16 bold',
             width=40,
             anchor=tk.W)
-        t_start_label = tk.Label(param_frame, text='Start Time (data units)')
-        t_start_field = tk.Entry(param_frame)
-        t_end_label = tk.Label(param_frame, text='End Time (data units)')
-        t_end_field = tk.Entry(param_frame)
-        anim_scale_label = tk.Label(param_frame, text='Animation Scale')
-        anim_scale_field = tk.Entry(param_frame)
-        framerate_label = tk.Label(param_frame, text='Animation Framerate')
-        framerate_field = tk.Entry(param_frame)
+        self.t_start_label = tk.Label(self.param_frame, text='Start Time (data units)')
+        self.t_start_field = tk.Entry(self.param_frame)
+        self.t_end_label = tk.Label(self.param_frame, text='End Time (data units)')
+        self.t_end_field = tk.Entry(self.param_frame)
+        self.anim_scale_label = tk.Label(self.param_frame, text='Animation Scale')
+        self.anim_scale_field = tk.Entry(self.param_frame)
+        self.framerate_label = tk.Label(self.param_frame, text='Animation Framerate')
+        self.framerate_field = tk.Entry(self.param_frame)
 
-        param_label.grid(row=0, column=0, columnspan=2)
-        t_start_label.grid(row=1, column=0, sticky=tk.W)
-        t_start_field.grid(row=1, column=1)
-        t_end_label.grid(row=2, column=0, sticky=tk.W)
-        t_end_field.grid(row=2, column=1)
-        anim_scale_label.grid(row=3, column=0, sticky=tk.W)
-        anim_scale_field.grid(row=3, column=1)
-        framerate_label.grid(row=4, column=0, sticky=tk.W)
-        framerate_field.grid(row=4, column=1)
+        self.param_label.grid(row=0, column=0, columnspan=2)
+        self.t_start_label.grid(row=1, column=0, sticky=tk.W)
+        self.t_start_field.grid(row=1, column=1)
+        self.t_end_label.grid(row=2, column=0, sticky=tk.W)
+        self.t_end_field.grid(row=2, column=1)
+        self.anim_scale_label.grid(row=3, column=0, sticky=tk.W)
+        self.anim_scale_field.grid(row=3, column=1)
+        self.framerate_label.grid(row=4, column=0, sticky=tk.W)
+        self.framerate_field.grid(row=4, column=1)
 
         # Smoothing
-        smoothing_frame = tk.Frame(master)
-        smoothing_frame.grid(row=1, column=0)
-        smoothing_label = tk.Label(smoothing_frame,
+        self.run_smooth = tk.IntVar()
+        self.smoothing_frame = tk.Frame(master)
+        self.smoothing_frame.grid(row=1, column=0)
+        self.smoothing_label = tk.Label(self.smoothing_frame,
             text='Smoothing',
             font='Helvetica 16 bold',
             width=40,
             anchor=tk.W)
-        smoothing_check = tk.Checkbutton(smoothing_frame, text='Apply Smoothing', variable=run_smooth)
+        self.smoothing_check = tk.Checkbutton(self.smoothing_frame,
+            text='Apply Smoothing',
+            variable=self.run_smooth)
 
-        smoothing_label.grid(row=0, column=0, sticky='W')  # Not working as expected
-        smoothing_check.grid(row=1, column=0)
+        self.smoothing_label.grid(row=0, column=0, sticky='W')  # Not working as expected
+        self.smoothing_check.grid(row=1, column=0)
 
         # Interpolation
-        interp_frame = tk.Frame(master)
-        interp_frame.grid(row=2, column=0)
-        interp_label = tk.Label(interp_frame,
+        self.run_interpolate = tk.IntVar()
+        self.interp_frame = tk.Frame(master)
+        self.interp_frame.grid(row=2, column=0)
+        self.interp_label = tk.Label(self.interp_frame,
             text='Interpolation',
             font='Helvetica 16 bold',
             width=40,
             anchor=tk.W)
-        interp_check = tk.Checkbutton(interp_frame, text='Apply Interpolation', variable=run_interpolate)
+        self.interp_check = tk.Checkbutton(self.interp_frame,
+            text='Apply Interpolation',
+            variable=self.run_interpolate)
 
-        interp_label.pack(anchor=tk.W)
-        interp_check.pack()
+        self.interp_label.pack(anchor=tk.W)
+        self.interp_check.pack()
 
         # Graph Preview
-        preview_frame = tk.Frame(master)
-        preview_label = tk.Label(preview_frame,
+        self.preview_frame = tk.Frame(master)
+        self.preview_label = tk.Label(self.preview_frame,
             text='Plot Preview (final frame)',
             font='Helvetica 16 bold',
             width=50,
             anchor=tk.N)
 
-        preview_frame.grid(row=0, column=1, rowspan=3, sticky=tk.N)
-        preview_label.pack(fill='y')
+        self.preview_frame.grid(row=0, column=1, rowspan=3, sticky=tk.N)
+        self.preview_label.pack(fill='y')
 
         # Execution
-        execution_frame = tk.Frame(root)
-        preview_button = tk.Button(execution_frame,
-                                   text='Generate Plot Preview')
-        execution_button = tk.Button(execution_frame,
+        self.execution_frame = tk.Frame(master)
+        self.preview_button = tk.Button(self.execution_frame,
+            text='Generate Plot Preview')
+        self.execution_button = tk.Button(self.execution_frame,
             text='Generate Animation',
-            command=lambda: plotting_execution(t_start_field, t_end_field, anim_scale_field, framerate_field, run_smooth, run_interpolate))
+            command=self.plotting_execution())
 
-        execution_frame.grid(row=3, column=0, columnspan=2)
-        preview_button.grid(row=0, column=0, padx=5, pady=5)
-        execution_button.grid(row=0, column=1, padx=5, pady=5)
+        self.execution_frame.grid(row=3, column=0, columnspan=2)
+        self.preview_button.grid(row=0, column=0, padx=5, pady=5)
+        self.execution_button.grid(row=0, column=1, padx=5, pady=5)
 
-        def test():
+        def test(self):
             print('testing testing!')
 
-        def numorder(n):  # Finds the order of magnitude of a number
+        # Finds the order of magnitude of a number
+        def numorder(self, n):
             n = abs(n)
             if n == 0:
                 raise Exception('number is 0, has no order!')
@@ -104,7 +110,8 @@ class MainApplication:
                 testorder += 1
             return testorder - 1
 
-        def find_graphlims(max=10, min=-10):  # Finds appropriate y-axis limits for data
+        # Finds appropriate y-axis limits for data
+        def find_graphlims(self, max=10, min=-10):
             maxorder = numorder(max)
             minorder = numorder(min)
             if maxorder - minorder >= 3:
@@ -124,7 +131,8 @@ class MainApplication:
                     minlim = np.floor(min / float(10**minorder)) * 10**minorder
             return minlim, maxlim
 
-        def plot_prepare():
+        # Prepare output folder
+        def plot_prepare(self):
             directory = os.getcwd() + '/frames'
             if not os.path.exists(directory):
                 os.makedirs(directory)
@@ -133,89 +141,82 @@ class MainApplication:
                 if oldFrame.endswith('.png'):
                     os.unlink('frames/' + oldFrame)
 
-        def frame_export(xs, ys, t_domain, frame_tstep, a_scale, t_delta, fig, ax, font, frame):
-            ax.cla()
+        # Export Frames
+        def frame_export(self):
+            self.ax.cla()
 
             # Plot properties
-            plt.xlabel('Time', fontdict=font)
-            plt.ylabel('Data', fontdict=font)
-            plt.title('Data versus Time', fontdict=font)
-            ax.set_xlim(0, t_domain)
-            ax.set_ylim(find_graphlims(max=np.max(ys), min=np.min(ys)))
-            # ax.set_ylim(0, np.ceil(max(ys)/100) * 100)
-            ax.grid()
+            plt.xlabel('Time', fontdict=self.font)
+            plt.ylabel('Data', fontdict=self.font)
+            plt.title('Data versus Time', fontdict=self.font)
+            self.ax.set_xlim(0, self.t_domain)
+            self.ax.set_ylim(find_graphlims(max=np.max(self.ys), min=np.min(self.ys)))
+            self.ax.grid()
 
             # Plotting
-            animation_time = frame_tstep * frame
-            frameindex = int(round(animation_time / (a_scale * t_delta)))
-            ax.plot(xs[0:frameindex], ys[0:frameindex], 'r', linewidth=3)
+            self.animation_time = self.frame_tstep * self.frame
+            self.frameindex = int(round(self.animation_time / (self.a_scale * self.t_delta)))
+            self.ax.plot(self.xs[0:self.frameindex], self.ys[0:self.frameindex], 'r', linewidth=3)
 
-            fig.savefig('frames/frame_' + str(frame) + '.png', dpi=200)
+            self.fig.savefig('frames/frame_' + str(self.frame) + '.png', dpi=200)
 
-            print('saved frame', frame)
+            print('saved frame', self.frame)
 
-        def input_validate():  # Build this out to validate all the user inputs and warn/abort as necessary
+        # Build this out to validate all the user inputs and warn/abort as necessary
+        def input_validate(self):
             pass
 
-        def plotting_execution(t_start_field, t_end_field, anim_scale_field, framerate_field, run_smooth, run_interpolate):
+        def plotting_execution(self):
             print('executing plotting')
 
-            t_i = float(t_start_field.get())
-            t_f = float(t_end_field.get())
-            a_scale = float(anim_scale_field.get())
-            fr = float(framerate_field.get())
-            run_smo = run_smooth.get()
-            run_intp = run_interpolate.get()
-            filename = 'data.csv'
-
-            # print(t_i)
-            # print(t_i == 5.)
-            # print(run_smo == True)
-            # print(run_intp == True)
+            self.t_i = float(self.t_start_field.get())
+            self.t_f = float(self.t_end_field.get())
+            self.a_scale = float(self.anim_scale_field.get())
+            self.fr = float(self.framerate_field.get())
+            self.filename = 'data.csv'
 
             # Load data
-            data = np.loadtxt(filename, delimiter=',', skiprows=1, usecols=[0, 1])
+            self.data = np.loadtxt(self.filename, delimiter=',', skiprows=1, usecols=[0, 1])
 
             # Preparing cropped list of x values
-            t_delta = data[1, 0] - data[0, 0]
-            t_domain = t_f - t_i
-            xs = np.linspace(0, t_domain, num=t_domain / t_delta)
+            self.t_delta = self.data[1, 0] - self.data[0, 0]
+            self.t_domain = self.t_f - self.t_i
+            self.xs = np.linspace(0, self.t_domain, num=self.t_domain / self.t_delta)
 
             # Preparing cropped list of y values
-            t_start_index = int(round((t_i - data[0, 0]) / t_delta))
-            t_end_index = t_start_index + len(xs)
-            ys = data[t_start_index:t_end_index, 1]
+            self.t_start_index = int(round((self.t_i - self.data[0, 0]) / self.t_delta))
+            self.t_end_index = self.t_start_index + len(self.xs)
+            self.ys = self.data[self.t_start_index:self.t_end_index, 1]
 
-            num_frames = int(t_domain * fr * a_scale)
-            frame_tstep = 1. / fr  # How much animation-time passes per frame
+            self.num_frames = int(self.t_domain * self.fr * self.a_scale)
+            self.frame_tstep = 1. / self.fr  # How much animation-time passes per frame
 
-            if run_smo:
-                smoothing_window = int(np.ceil(np.median([4, 2 * len(xs) / num_frames, 12])) // 2 * 2 + 1)
-                print('smoothing with window', smoothing_window)
-                if smoothing_window <= 5:
-                    print("warning: small smoothing window")
-                ys = signal.savgol_filter(ys, window_length=smoothing_window, polyorder=3)
+            if self.run_smooth.get():
+                self.smoothing_window = int(np.ceil(np.median([4, 2 * len(self.xs) / self.num_frames, 12])) // 2 * 2 + 1)  # Round up to nearest odd number
+                print('smoothing with window', self.smoothing_window)
+                if self.smoothing_window <= 5:
+                    print('warning: small smoothing window')
+                self.ys = signal.savgol_filter(self.ys, window_length=self.smoothing_window, polyorder=3)
 
-            if run_intp:
-                f = interpolate.interp1d(xs, ys, kind='quadratic')
-                new_xs = np.linspace(0, t_domain, num=num_frames)
-                t_delta = new_xs[1] - new_xs[0]
-                new_ys = f(new_xs)
-                xs = new_xs
-                ys = new_ys
+            if self.run_interpolate.get():
+                f = interpolate.interp1d(self.xs, self.ys, kind='quadratic')
+                self.new_xs = np.linspace(0, self.t_domain, num=self.num_frames)
+                self.t_delta = self.new_xs[1] - self.new_xs[0]
+                self.new_ys = f(self.new_xs)
+                self.xs = self.new_xs
+                self.ys = self.new_ys
 
-            fig, ax = plt.subplots()
+            self.fig, self.ax = plt.subplots()
 
-            font = {'weight': 'bold',
-                    'fontname': 'Arial'
-                    }
+            self.font = {'weight': 'bold',
+                'fontname': 'Arial'}
 
-            print('outputting', num_frames, 'frame(s)')
+            print('outputting', self.num_frames, 'frame(s)')
 
             plot_prepare()
 
-            for frame in range(num_frames):
-                frame_export(xs, ys, t_domain, frame_tstep, a_scale, t_delta, fig, ax, font, frame)
+            for self.frame in range(self.num_frames):
+                frame_export()
 
 
 if __name__ == '__main__':
