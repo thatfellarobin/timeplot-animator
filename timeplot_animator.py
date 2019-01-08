@@ -89,7 +89,7 @@ class MainApplication:
             text='Generate Plot Preview')
         self.execution_button = tk.Button(self.execution_frame,
             text='Generate Animation',
-            command=self.plotting_execution())
+            command=lambda: plotting_execution(self))
 
         self.execution_frame.grid(row=3, column=0, columnspan=2)
         self.preview_button.grid(row=0, column=0, padx=5, pady=5)
@@ -112,8 +112,8 @@ class MainApplication:
 
         # Finds appropriate y-axis limits for data
         def find_graphlims(self, max=10, min=-10):
-            maxorder = numorder(max)
-            minorder = numorder(min)
+            maxorder = numorder(self, max)
+            minorder = numorder(self, min)
             if maxorder - minorder >= 3:
                 minlim = 0
                 maxlim = np.ceil(max / float(10**maxorder)) * 10**maxorder
@@ -150,7 +150,7 @@ class MainApplication:
             plt.ylabel('Data', fontdict=self.font)
             plt.title('Data versus Time', fontdict=self.font)
             self.ax.set_xlim(0, self.t_domain)
-            self.ax.set_ylim(find_graphlims(max=np.max(self.ys), min=np.min(self.ys)))
+            self.ax.set_ylim(find_graphlims(self, max=np.max(self.ys), min=np.min(self.ys)))
             self.ax.grid()
 
             # Plotting
@@ -213,10 +213,10 @@ class MainApplication:
 
             print('outputting', self.num_frames, 'frame(s)')
 
-            plot_prepare()
+            plot_prepare(self)
 
             for self.frame in range(self.num_frames):
-                frame_export()
+                frame_export(self)
 
 
 if __name__ == '__main__':
