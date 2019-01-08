@@ -1,4 +1,3 @@
-# from pltanim_func import *
 import tkinter as tk
 import os
 import numpy as np
