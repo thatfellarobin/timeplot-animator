@@ -75,8 +75,24 @@ class MainApplication:
             font='Helvetica 16 bold',
             anchor=tk.N)
 
+        self.graphtitle_label = tk.Label(self.graphsetting_frame, text='Graph Title')
+        self.graphtitle_field = tk.Entry(self.graphsetting_frame)
+        self.graphtitle_field.insert(0, 'Data versus Time')
+        self.graphx_label = tk.Label(self.graphsetting_frame, text='X Axis Label')
+        self.graphx_field = tk.Entry(self.graphsetting_frame)
+        self.graphx_field.insert(0, 'Time')
+        self.graphy_label = tk.Label(self.graphsetting_frame, text='Y Axis Label')
+        self.graphy_field = tk.Entry(self.graphsetting_frame)
+        self.graphy_field.insert(0, 'Data')
+
         self.graphsetting_frame.grid(row=0, column=1, rowspan=3, sticky=tk.NW)
-        self.graphsetting_label.grid(row=0, column=0, sticky=tk.W)
+        self.graphsetting_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
+        self.graphtitle_label.grid(row=1, column=0, sticky=tk.W)
+        self.graphtitle_field.grid(row=1, column=1)
+        self.graphx_label.grid(row=2, column=0, sticky=tk.W)
+        self.graphx_field.grid(row=2, column=1)
+        self.graphy_label.grid(row=3, column=0, sticky=tk.W)
+        self.graphy_field.grid(row=3, column=1)
 
         # Graph Preview
         self.preview_frame = tk.Frame(master)
@@ -156,9 +172,9 @@ class MainApplication:
         self.ax.cla()
 
         # Plot properties
-        plt.xlabel('Time', fontdict=self.font)
-        plt.ylabel('Data', fontdict=self.font)
-        plt.title('Data versus Time', fontdict=self.font)
+        plt.xlabel(self.graphx_field.get(), fontdict=self.font)
+        plt.ylabel(self.graphy_field.get(), fontdict=self.font)
+        plt.title(self.graphtitle_field.get(), fontdict=self.font)
         self.ax.set_xlim(0, self.t_domain)
         self.ax.set_ylim(self.find_graphlims(max=np.max(self.ys), min=np.min(self.ys)))
         self.ax.grid()
@@ -173,6 +189,7 @@ class MainApplication:
         print('saved frame', self.frame)
 
     # Build this out to validate all the user inputs and warn/abort as necessary
+    # Should fill in some default values if the user left fields blank (or just take care of this by having default values pre-populated)
     def input_validate(self):
         pass
 
