@@ -109,7 +109,8 @@ class MainApplication:
         # Execution
         self.execution_frame = tk.Frame(master)
         self.preview_button = tk.Button(self.execution_frame,
-            text='Generate Plot Preview')
+            text='Generate Plot Preview',
+            command=lambda: self.generate_preview())
         self.execution_button = tk.Button(self.execution_frame,
             text='Generate Animation',
             command=lambda: self.plotting_execution())
@@ -160,17 +161,24 @@ class MainApplication:
         return minlim, maxlim
 
     # Prepare output folder
-    def plot_prepare(self):
+    def plot_prepare(self, clear=True):
         directory = os.getcwd() + '/frames'
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-        for oldFrame in os.listdir('frames'):
-            if oldFrame.endswith('.png'):
-                os.unlink('frames/' + oldFrame)
+        if clear:
+            for oldFrame in os.listdir('frames'):
+                if oldFrame.endswith('.png'):
+                    os.unlink('frames/' + oldFrame)
+
+        self.fig, self.ax = plt.subplots()
+
+        self.font = {'weight': 'bold',
+            'fontname': 'Arial'}
 
     # Export Frames
-    def frame_export(self):
+    def frame_export(self, title):
+        title = str(title)
         self.ax.cla()
 
         # Plot properties
@@ -186,19 +194,17 @@ class MainApplication:
         self.frameindex = int(round(self.animation_time / (self.a_scale * self.t_delta)))
         self.ax.plot(self.xs[0:self.frameindex], self.ys[0:self.frameindex], 'r', linewidth=3)
 
-        self.fig.savefig('frames/frame_' + str(self.frame) + '.png', dpi=200)
+        self.fig.savefig('frames/frame_' + title + '.png', dpi=200)
 
-        print('saved frame', self.frame)
+        print('saved frame_' + title)
 
     # Build this out to validate all the user inputs and warn/abort as necessary
     # Should fill in some default values if the user left fields blank (or just take care of this by having default values pre-populated)
     def input_validate(self):
         pass
 
-    def plotting_execution(self):
-        print('executing plotting')
-        print(self.t_start_field)
-
+    # Gather user inputs and get the data ready internally
+    def prepare_data(self):
         self.t_i = float(self.t_start_field.get())
         self.t_f = float(self.t_end_field.get())
         self.a_scale = float(self.anim_scale_field.get())
@@ -211,7 +217,7 @@ class MainApplication:
         # Preparing cropped list of x values
         self.t_delta = self.data[1, 0] - self.data[0, 0]
         self.t_domain = self.t_f - self.t_i
-        self.xs = np.linspace(0, self.t_domain, num=self.t_domain / self.t_delta)
+        self.xs = np.linspace(0, self.t_domain, num=int(self.t_domain / self.t_delta))
 
         # Preparing cropped list of y values
         self.t_start_index = int(round((self.t_i - self.data[0, 0]) / self.t_delta))
@@ -221,6 +227,7 @@ class MainApplication:
         self.num_frames = int(self.t_domain * self.fr * self.a_scale)
         self.frame_tstep = 1. / self.fr  # How much animation-time passes per frame
 
+    def smooth_and_interp(self):
         if self.run_smooth.get():
             self.smoothing_window = int(np.ceil(np.median([4, 2 * len(self.xs) / self.num_frames, 12])) // 2 * 2 + 1)  # Round up to nearest odd number
             print('smoothing with window', self.smoothing_window)
@@ -236,17 +243,31 @@ class MainApplication:
             self.xs = self.new_xs
             self.ys = self.new_ys
 
-        self.fig, self.ax = plt.subplots()
+    # Create a preview for the user to evaluate
+    def generate_preview(self):
+        print('generating preview')
 
-        self.font = {'weight': 'bold',
-            'fontname': 'Arial'}
+        self.prepare_data()
+        self.smooth_and_interp()
 
-        print('outputting', self.num_frames, 'frame(s)')
+        self.plot_prepare(False)
+
+        self.frame = self.num_frames - 1
+        self.frame_export('preview')
+
+    # Generate the animation frames
+    def plotting_execution(self):
+        print('executing plotting')
+
+        self.prepare_data()
+        self.smooth_and_interp()
 
         self.plot_prepare()
 
+        print('outputting', self.num_frames, 'frame(s)')
+
         for self.frame in range(self.num_frames):
-            self.frame_export()
+            self.frame_export(str(self.frame))
 
 
 if __name__ == '__main__':
