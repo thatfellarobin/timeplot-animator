@@ -14,7 +14,6 @@ class MainApplication:
 
         # General Parameters
         self.param_frame = tk.Frame(master)
-        self.param_frame.grid(row=0, column=0)
         self.param_label = tk.Label(self.param_frame,
             text='General Parameters',
             font='Helvetica 16 bold',
@@ -28,6 +27,7 @@ class MainApplication:
         self.framerate_label = tk.Label(self.param_frame, text='Animation Framerate')
         self.framerate_field = tk.Entry(self.param_frame)
 
+        self.param_frame.grid(row=0, column=0, sticky=tk.W)
         self.param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
         self.t_start_label.grid(row=1, column=0, sticky=tk.W)
         self.t_start_field.grid(row=1, column=1)
@@ -41,7 +41,6 @@ class MainApplication:
         # Smoothing
         self.run_smooth = tk.IntVar()
         self.smoothing_frame = tk.Frame(master)
-        self.smoothing_frame.grid(row=1, column=0)
         self.smoothing_label = tk.Label(self.smoothing_frame,
             text='Smoothing',
             font='Helvetica 16 bold',
@@ -50,13 +49,13 @@ class MainApplication:
             text='Apply Smoothing',
             variable=self.run_smooth)
 
+        self.smoothing_frame.grid(row=1, column=0, sticky=tk.W)
         self.smoothing_label.grid(row=0, column=0, sticky=tk.W)
         self.smoothing_check.grid(row=1, column=0, sticky=tk.W)
 
         # Interpolation
         self.run_interpolate = tk.IntVar()
         self.interp_frame = tk.Frame(master)
-        self.interp_frame.grid(row=2, column=0)
         self.interp_label = tk.Label(self.interp_frame,
             text='Interpolation',
             font='Helvetica 16 bold',
@@ -65,18 +64,19 @@ class MainApplication:
             text='Apply Interpolation',
             variable=self.run_interpolate)
 
+        self.interp_frame.grid(row=2, column=0, sticky=tk.W)
         self.interp_label.grid(row=0, column=0, sticky=tk.W)
         self.interp_check.grid(row=1, column=0, sticky=tk.W)
 
         # Graph Settings
         self.graphsetting_frame = tk.Frame(master)
-        self.graphsetting_frame.grid(row=0, column=1, rowspan=3, sticky=tk.W)
         self.graphsetting_label = tk.Label(self.graphsetting_frame,
             text='Graphing Parameters',
             font='Helvetica 16 bold',
             anchor=tk.N)
 
-        self.graphsetting_label.pack(anchor=tk.N, fill='y')
+        self.graphsetting_frame.grid(row=0, column=1, rowspan=3, sticky=tk.NW)
+        self.graphsetting_label.grid(row=0, column=0, sticky=tk.W)
 
         # Graph Preview
         self.preview_frame = tk.Frame(master)
