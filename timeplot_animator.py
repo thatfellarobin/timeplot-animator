@@ -18,7 +18,6 @@ class MainApplication:
         self.param_label = tk.Label(self.param_frame,
             text='General Parameters',
             font='Helvetica 16 bold',
-            width=40,
             anchor=tk.W)
         self.t_start_label = tk.Label(self.param_frame, text='Start Time (data units)')
         self.t_start_field = tk.Entry(self.param_frame)
@@ -29,7 +28,7 @@ class MainApplication:
         self.framerate_label = tk.Label(self.param_frame, text='Animation Framerate')
         self.framerate_field = tk.Entry(self.param_frame)
 
-        self.param_label.grid(row=0, column=0, columnspan=2)
+        self.param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
         self.t_start_label.grid(row=1, column=0, sticky=tk.W)
         self.t_start_field.grid(row=1, column=1)
         self.t_end_label.grid(row=2, column=0, sticky=tk.W)
@@ -46,14 +45,13 @@ class MainApplication:
         self.smoothing_label = tk.Label(self.smoothing_frame,
             text='Smoothing',
             font='Helvetica 16 bold',
-            width=40,
             anchor=tk.W)
         self.smoothing_check = tk.Checkbutton(self.smoothing_frame,
             text='Apply Smoothing',
             variable=self.run_smooth)
 
-        self.smoothing_label.grid(row=0, column=0, sticky='W')  # Not working as expected
-        self.smoothing_check.grid(row=1, column=0)
+        self.smoothing_label.grid(row=0, column=0, sticky=tk.W)
+        self.smoothing_check.grid(row=1, column=0, sticky=tk.W)
 
         # Interpolation
         self.run_interpolate = tk.IntVar()
@@ -62,14 +60,13 @@ class MainApplication:
         self.interp_label = tk.Label(self.interp_frame,
             text='Interpolation',
             font='Helvetica 16 bold',
-            width=40,
             anchor=tk.W)
         self.interp_check = tk.Checkbutton(self.interp_frame,
             text='Apply Interpolation',
             variable=self.run_interpolate)
 
-        self.interp_label.pack(anchor=tk.W)
-        self.interp_check.pack()
+        self.interp_label.grid(row=0, column=0, sticky=tk.W)
+        self.interp_check.grid(row=1, column=0, sticky=tk.W)
 
         # Graph Settings
         self.graphsetting_frame = tk.Frame(master)
@@ -77,9 +74,7 @@ class MainApplication:
         self.graphsetting_label = tk.Label(self.graphsetting_frame,
             text='Graphing Parameters',
             font='Helvetica 16 bold',
-            width=40,
-            anchor=tk.N,
-            bg='blue')
+            anchor=tk.N)
 
         self.graphsetting_label.pack(anchor=tk.N, fill='y')
 
@@ -88,7 +83,6 @@ class MainApplication:
         self.preview_label = tk.Label(self.preview_frame,
             text='Plot Preview (final frame)',
             font='Helvetica 16 bold',
-            width=50,
             anchor=tk.N)
 
         self.preview_frame.grid(row=0, column=2, rowspan=3, sticky=tk.N)
@@ -105,6 +99,11 @@ class MainApplication:
         self.execution_frame.grid(row=3, column=0, columnspan=3)
         self.preview_button.grid(row=0, column=0, padx=5, pady=5)
         self.execution_button.grid(row=0, column=1, padx=5, pady=5)
+
+        # Some global GUI appearance stuff
+        master.grid_columnconfigure(0, weight=0)
+        master.grid_columnconfigure(1, weight=0)
+        master.grid_columnconfigure(2, weight=2)
 
     def test(self):
         print('testing testing!')
