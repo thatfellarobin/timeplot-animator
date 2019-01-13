@@ -24,8 +24,10 @@ class MainApplication:
         self.t_end_field = tk.Entry(self.param_frame)
         self.anim_scale_label = tk.Label(self.param_frame, text='Animation Scale')
         self.anim_scale_field = tk.Entry(self.param_frame)
+        self.anim_scale_field.insert(0, '1')
         self.framerate_label = tk.Label(self.param_frame, text='Animation Framerate')
         self.framerate_field = tk.Entry(self.param_frame)
+        self.framerate_field.insert(0, '30')
 
         self.param_frame.grid(row=0, column=0, sticky=tk.W)
         self.param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
