@@ -1,5 +1,5 @@
 .texpadtmp
-*.png
+frames/*.png
 *.swp
 *.csv
 *.xlsx

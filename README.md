@@ -8,12 +8,20 @@ The script reads in a csv file containing the appropriate data. Column 0 should 
 
 Running timeplot_animator.py should open a GUI. Here's a quick reference:
 
-![if u see dis da image is broken lmao](https://github.com/thatfellarobin/timeplot-animator/blob/master/keyCAD_timeplotanim/keyCAD_timeplotanim.001.jpeg "Behold... my first GUI")
+![if u see dis da image is broken lmao](https://github.com/thatfellarobin/timeplot-animator/blob/master/keyCAD_timeplotanim/keyCAD_timeplotanim.001.png)
+
+![if u see dis da image is broken lmao](https://github.com/thatfellarobin/timeplot-animator/blob/master/keyCAD_timeplotanim/keyCAD_timeplotanim.002.png)
+
+![if u see dis da image is broken lmao](https://github.com/thatfellarobin/timeplot-animator/blob/master/keyCAD_timeplotanim/keyCAD_timeplotanim.003.png)
+
+![if u see dis da image is broken lmao](https://github.com/thatfellarobin/timeplot-animator/blob/master/keyCAD_timeplotanim/keyCAD_timeplotanim.004.png)
 
 ## Possible future developments:
 - Prettier graphs
 - Prettier GUI
 - GUI allows control of more parameters
+- File import preview
 - Export video file directly
 - Handle non-constant time deltas between data points (already does if interpolation is used)
 - Plot more than one line
+- Able to accept excel
