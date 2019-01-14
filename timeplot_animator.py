@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import ImageTk, Image
 import os
 import numpy as np
 from scipy import interpolate, signal
@@ -29,7 +30,7 @@ class MainApplication:
         self.framerate_field = tk.Entry(self.param_frame)
         self.framerate_field.insert(0, '30')
 
-        self.param_frame.grid(row=0, column=0, sticky=tk.W)
+        self.param_frame.grid(row=0, column=0, sticky=tk.NW)
         self.param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
         self.t_start_label.grid(row=1, column=0, sticky=tk.W)
         self.t_start_field.grid(row=1, column=1)
@@ -51,7 +52,7 @@ class MainApplication:
             text='Apply Smoothing',
             variable=self.run_smooth)
 
-        self.smoothing_frame.grid(row=1, column=0, sticky=tk.W)
+        self.smoothing_frame.grid(row=1, column=0, sticky=tk.NW)
         self.smoothing_label.grid(row=0, column=0, sticky=tk.W)
         self.smoothing_check.grid(row=1, column=0, sticky=tk.W)
 
@@ -66,7 +67,7 @@ class MainApplication:
             text='Apply Interpolation',
             variable=self.run_interpolate)
 
-        self.interp_frame.grid(row=2, column=0, sticky=tk.W)
+        self.interp_frame.grid(row=2, column=0, sticky=tk.NW)
         self.interp_label.grid(row=0, column=0, sticky=tk.W)
         self.interp_check.grid(row=1, column=0, sticky=tk.W)
 
@@ -104,7 +105,7 @@ class MainApplication:
             anchor=tk.N)
 
         self.preview_frame.grid(row=0, column=2, rowspan=3, sticky=tk.N)
-        self.preview_label.pack(fill='y')
+        self.preview_label.grid(row=0, column=0)
 
         # Execution
         self.execution_frame = tk.Frame(master)
@@ -254,6 +255,15 @@ class MainApplication:
 
         self.frame = self.num_frames - 1
         self.frame_export('preview')
+
+        self.preview_raw = Image.open('frames/frame_preview.png')
+        self.preview_width, self.preview_height = self.preview_raw.size
+        self.preview_resized = self.preview_raw.resize((800, int(self.preview_height / (self.preview_width / 800))), Image.ANTIALIAS)
+
+        self.preview_image = ImageTk.PhotoImage(self.preview_resized)
+        self.preview_panel = tk.Label(self.preview_frame, image=self.preview_image)
+
+        self.preview_panel.grid(row=1, column=0)
 
     # Generate the animation frames
     def plotting_execution(self):
