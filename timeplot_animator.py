@@ -18,7 +18,7 @@ class MainApplication:
         self.param_label = tk.Label(self.param_frame,
             text='General Parameters',
             font='Helvetica 16 bold',
-            anchor=tk.W)
+            anchor=tk.NW)
         self.t_start_label = tk.Label(self.param_frame, text='Start Time (data units)')
         self.t_start_field = tk.Entry(self.param_frame)
         self.t_end_label = tk.Label(self.param_frame, text='End Time (data units)')
@@ -47,14 +47,14 @@ class MainApplication:
         self.smoothing_label = tk.Label(self.smoothing_frame,
             text='Smoothing',
             font='Helvetica 16 bold',
-            anchor=tk.W)
+            anchor=tk.NW)
         self.smoothing_check = tk.Checkbutton(self.smoothing_frame,
             text='Apply Smoothing',
             variable=self.run_smooth)
 
         self.smoothing_frame.grid(row=1, column=0, sticky=tk.NW)
-        self.smoothing_label.grid(row=0, column=0, sticky=tk.W)
-        self.smoothing_check.grid(row=1, column=0, sticky=tk.W)
+        self.smoothing_label.grid(row=0, column=0, sticky=tk.NW)
+        self.smoothing_check.grid(row=1, column=0, sticky=tk.NW)
 
         # Interpolation
         self.run_interpolate = tk.IntVar()
@@ -62,14 +62,14 @@ class MainApplication:
         self.interp_label = tk.Label(self.interp_frame,
             text='Interpolation',
             font='Helvetica 16 bold',
-            anchor=tk.W)
+            anchor=tk.NW)
         self.interp_check = tk.Checkbutton(self.interp_frame,
             text='Apply Interpolation',
             variable=self.run_interpolate)
 
         self.interp_frame.grid(row=2, column=0, sticky=tk.NW)
-        self.interp_label.grid(row=0, column=0, sticky=tk.W)
-        self.interp_check.grid(row=1, column=0, sticky=tk.W)
+        self.interp_label.grid(row=0, column=0, sticky=tk.NW)
+        self.interp_check.grid(row=1, column=0, sticky=tk.NW)
 
         # Graph Settings
         self.graphsetting_frame = tk.Frame(master)
@@ -258,7 +258,9 @@ class MainApplication:
 
         self.preview_raw = Image.open('frames/frame_preview.png')
         self.preview_width, self.preview_height = self.preview_raw.size
-        self.preview_resized = self.preview_raw.resize((800, int(self.preview_height / (self.preview_width / 800))), Image.ANTIALIAS)
+        self.preview_resized = self.preview_raw.resize(
+            (400, int(self.preview_height / (self.preview_width / 400))),
+            Image.ANTIALIAS)
 
         self.preview_image = ImageTk.PhotoImage(self.preview_resized)
         self.preview_panel = tk.Label(self.preview_frame, image=self.preview_image)
