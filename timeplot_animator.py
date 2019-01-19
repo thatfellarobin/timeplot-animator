@@ -13,12 +13,29 @@ class MainApplication:
 
         master.title('Timeplot Animator')
 
+        # File loading
+        self.file_frame = tk.Frame(master)
+        self.file_label = tk.Label(self.file_frame,
+            text='File Load',
+            font='Helvetica 16 bold',
+            anchor=tk.N)
+
+        self.filename_label = tk.Label(self.file_frame, text='Filename')
+        self.filename_field = tk.Entry(self.file_frame)
+        self.filename_field.insert(0, 'data.csv')
+
+        self.file_frame.grid(row=0, column=0, sticky=tk.NW)
+        self.file_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
+        self.filename_label.grid(row=1, column=0, sticky=tk.W)
+        self.filename_field.grid(row=1, column=1, sticky=tk.E)
+
         # General Parameters
         self.param_frame = tk.Frame(master)
         self.param_label = tk.Label(self.param_frame,
             text='General Parameters',
             font='Helvetica 16 bold',
             anchor=tk.NW)
+
         self.t_start_label = tk.Label(self.param_frame, text='Start Time (data units)')
         self.t_start_field = tk.Entry(self.param_frame)
         self.t_end_label = tk.Label(self.param_frame, text='End Time (data units)')
@@ -30,7 +47,7 @@ class MainApplication:
         self.framerate_field = tk.Entry(self.param_frame)
         self.framerate_field.insert(0, '30')
 
-        self.param_frame.grid(row=0, column=0, sticky=tk.NW)
+        self.param_frame.grid(row=1, column=0, sticky=tk.NW)
         self.param_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
         self.t_start_label.grid(row=1, column=0, sticky=tk.W)
         self.t_start_field.grid(row=1, column=1)
@@ -52,7 +69,7 @@ class MainApplication:
             text='Apply Smoothing',
             variable=self.run_smooth)
 
-        self.smoothing_frame.grid(row=1, column=0, sticky=tk.NW)
+        self.smoothing_frame.grid(row=2, column=0, sticky=tk.NW)
         self.smoothing_label.grid(row=0, column=0, sticky=tk.NW)
         self.smoothing_check.grid(row=1, column=0, sticky=tk.NW)
 
@@ -67,7 +84,7 @@ class MainApplication:
             text='Apply Interpolation',
             variable=self.run_interpolate)
 
-        self.interp_frame.grid(row=2, column=0, sticky=tk.NW)
+        self.interp_frame.grid(row=3, column=0, sticky=tk.NW)
         self.interp_label.grid(row=0, column=0, sticky=tk.NW)
         self.interp_check.grid(row=1, column=0, sticky=tk.NW)
 
@@ -88,7 +105,7 @@ class MainApplication:
         self.graphy_field = tk.Entry(self.graphsetting_frame)
         self.graphy_field.insert(0, 'Data')
 
-        self.graphsetting_frame.grid(row=0, column=1, rowspan=3, sticky=tk.NW)
+        self.graphsetting_frame.grid(row=0, column=1, rowspan=4, sticky=tk.NW)
         self.graphsetting_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
         self.graphtitle_label.grid(row=1, column=0, sticky=tk.W)
         self.graphtitle_field.grid(row=1, column=1)
@@ -104,7 +121,7 @@ class MainApplication:
             font='Helvetica 16 bold',
             anchor=tk.N)
 
-        self.preview_frame.grid(row=0, column=2, rowspan=3, sticky=tk.N)
+        self.preview_frame.grid(row=0, column=2, rowspan=4, sticky=tk.N)
         self.preview_label.grid(row=0, column=0)
 
         # Execution
@@ -116,7 +133,7 @@ class MainApplication:
             text='Generate Animation',
             command=lambda: self.plotting_execution())
 
-        self.execution_frame.grid(row=3, column=0, columnspan=3)
+        self.execution_frame.grid(row=4, column=0, columnspan=3)
         self.preview_button.grid(row=0, column=0, padx=5, pady=5)
         self.execution_button.grid(row=0, column=1, padx=5, pady=5)
 
@@ -210,7 +227,7 @@ class MainApplication:
         self.t_f = float(self.t_end_field.get())
         self.a_scale = float(self.anim_scale_field.get())
         self.fr = float(self.framerate_field.get())
-        self.filename = 'data.csv'
+        self.filename = self.filename_field.get()
 
         # Load data
         self.data = np.loadtxt(self.filename, delimiter=',', skiprows=1, usecols=[0, 1])
