@@ -23,11 +23,21 @@ class MainApplication:
         self.filename_label = tk.Label(self.file_frame, text='Filename')
         self.filename_field = tk.Entry(self.file_frame)
         self.filename_field.insert(0, 'data.csv')
+        self.headerrows_label = tk.Label(self.file_frame, text='Number of Header Rows')
+        self.headerrows_field = tk.Entry(self.file_frame)
+        self.headerrows_field.insert(0, '1')
+        self.datacolumns_label = tk.Label(self.file_frame, text='Number of Lines to Plot')
+        self.datacolumns_field = tk.Entry(self.file_frame)
+        self.datacolumns_field.insert(0, '1')
 
         self.file_frame.grid(row=0, column=0, sticky=tk.NW)
         self.file_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
         self.filename_label.grid(row=1, column=0, sticky=tk.W)
-        self.filename_field.grid(row=1, column=1, sticky=tk.E)
+        self.filename_field.grid(row=1, column=1)
+        self.headerrows_label.grid(row=2, column=0, sticky=tk.W)
+        self.headerrows_field.grid(row=2, column=1)
+        self.datacolumns_label.grid(row=3, column=0, sticky=tk.W)
+        self.datacolumns_field.grid(row=3, column=1)
 
         # General Parameters
         self.param_frame = tk.Frame(master)
@@ -203,6 +213,7 @@ class MainApplication:
         plt.xlabel(self.graphx_field.get(), fontdict=self.font)
         plt.ylabel(self.graphy_field.get(), fontdict=self.font)
         plt.title(self.graphtitle_field.get(), fontdict=self.font)
+        plt.set_cmap('tab10')
         self.ax.set_xlim(0, self.t_domain)
         self.ax.set_ylim(self.find_graphlims(max=np.max(self.ys), min=np.min(self.ys)))
         self.ax.grid()
@@ -210,7 +221,8 @@ class MainApplication:
         # Plotting
         self.animation_time = self.frame_tstep * self.frame
         self.frameindex = int(round(self.animation_time / (self.a_scale * self.t_delta)))
-        self.ax.plot(self.xs[0:self.frameindex], self.ys[0:self.frameindex], 'r', linewidth=3)
+        for i in range(self.datacolumns):
+            self.ax.plot(self.xs[0:self.frameindex], self.ys[0:self.frameindex, i], linewidth=3)
 
         self.fig.savefig('frames/frame_' + title + '.png', dpi=200)
 
@@ -228,9 +240,11 @@ class MainApplication:
         self.a_scale = float(self.anim_scale_field.get())
         self.fr = float(self.framerate_field.get())
         self.filename = self.filename_field.get()
+        self.headerrows = int(self.headerrows_field.get())
+        self.datacolumns = int(self.datacolumns_field.get())
 
         # Load data
-        self.data = np.loadtxt(self.filename, delimiter=',', skiprows=1, usecols=[0, 1])
+        self.data = np.loadtxt(self.filename, delimiter=',', skiprows=self.headerrows)
 
         # Preparing cropped list of x values
         self.t_delta = self.data[1, 0] - self.data[0, 0]
@@ -240,7 +254,7 @@ class MainApplication:
         # Preparing cropped list of y values
         self.t_start_index = int(round((self.t_i - self.data[0, 0]) / self.t_delta))
         self.t_end_index = self.t_start_index + len(self.xs)
-        self.ys = self.data[self.t_start_index:self.t_end_index, 1]
+        self.ys = self.data[self.t_start_index:self.t_end_index, 1:self.datacolumns + 1]
 
         self.num_frames = int(self.t_domain * self.fr * self.a_scale)
         self.frame_tstep = 1. / self.fr  # How much animation-time passes per frame
@@ -251,15 +265,21 @@ class MainApplication:
             print('smoothing with window', self.smoothing_window)
             if self.smoothing_window <= 5:
                 print('warning: small smoothing window')
-            self.ys = signal.savgol_filter(self.ys, window_length=self.smoothing_window, polyorder=3)
+            self.ys = signal.savgol_filter(self.ys,
+                window_length=self.smoothing_window,
+                polyorder=3,
+                axis=0)
 
         if self.run_interpolate.get():
-            f = interpolate.interp1d(self.xs, self.ys, kind='quadratic')
             self.new_xs = np.linspace(0, self.t_domain, num=self.num_frames)
             self.t_delta = self.new_xs[1] - self.new_xs[0]
-            self.new_ys = f(self.new_xs)
+
+            for i in range(self.datacolumns):
+                f = interpolate.interp1d(self.xs, self.ys[:, i], kind='quadratic')
+                self.new_ys = f(self.new_xs)
+                self.ys[:, i] = self.new_ys
+
             self.xs = self.new_xs
-            self.ys = self.new_ys
 
     # Create a preview for the user to evaluate
     def generate_preview(self):

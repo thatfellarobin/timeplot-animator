@@ -23,5 +23,5 @@ Running timeplot_animator.py should open a GUI. Here's a quick reference:
 - File import preview
 - Export video file directly
 - Handle non-constant time deltas between data points (already does if interpolation is used)
-- Plot more than one line
-- Able to accept excel
+- Graph Legend
+- Able to accept excel files
