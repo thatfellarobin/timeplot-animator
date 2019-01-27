@@ -140,8 +140,8 @@ class MainApplication:
             text='Generate Plot Preview',
             command=lambda: self.generate_preview())
         self.execution_button = tk.Button(self.execution_frame,
-            text='Generate Animation',
-            command=lambda: self.plotting_execution())
+            text='Generate Frames',
+            command=lambda: self.plotting_execution(master))
 
         self.execution_frame.grid(row=4, column=0, columnspan=3)
         self.preview_button.grid(row=0, column=0, padx=5, pady=5)
@@ -305,8 +305,13 @@ class MainApplication:
         self.preview_panel.grid(row=1, column=0)
 
     # Generate the animation frames
-    def plotting_execution(self):
+    def plotting_execution(self, master):
         print('executing plotting')
+
+        self.execution_button.config(text='Generating...', state=tk.DISABLED)
+        master.update()
+
+        print('button should be disabled')
 
         self.prepare_data()
         self.smooth_and_interp()
@@ -317,6 +322,8 @@ class MainApplication:
 
         for self.frame in range(self.num_frames):
             self.frame_export(str(self.frame))
+
+        self.execution_button.config(text='Generate Frames', state=tk.NORMAL)
 
 
 if __name__ == '__main__':
