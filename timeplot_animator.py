@@ -235,13 +235,17 @@ class MainApplication:
 
     # Gather user inputs and get the data ready internally
     def prepare_data(self):
-        self.t_i = float(self.t_start_field.get())
-        self.t_f = float(self.t_end_field.get())
-        self.a_scale = float(self.anim_scale_field.get())
-        self.fr = float(self.framerate_field.get())
-        self.filename = self.filename_field.get()
-        self.headerrows = int(self.headerrows_field.get())
-        self.datacolumns = int(self.datacolumns_field.get())
+        try:
+            self.t_i = float(self.t_start_field.get())
+            self.t_f = float(self.t_end_field.get())
+            self.a_scale = float(self.anim_scale_field.get())
+            self.fr = float(self.framerate_field.get())
+            self.filename = self.filename_field.get()
+            self.headerrows = int(self.headerrows_field.get())
+            self.datacolumns = int(self.datacolumns_field.get())
+        except ValueError:
+            print('Improper input data (put numbers where numbers are supposed to go)')
+            self.execution_button.config(text='Generate Frames', state=tk.NORMAL)
 
         # Load data
         self.data = np.loadtxt(self.filename, delimiter=',', skiprows=self.headerrows)
@@ -306,12 +310,9 @@ class MainApplication:
 
     # Generate the animation frames
     def plotting_execution(self, master):
-        print('executing plotting')
 
         self.execution_button.config(text='Generating...', state=tk.DISABLED)
         master.update()
-
-        print('button should be disabled')
 
         self.prepare_data()
         self.smooth_and_interp()
