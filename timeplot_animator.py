@@ -23,11 +23,21 @@ class MainApplication:
         self.filename_label = tk.Label(self.file_frame, text='Filename')
         self.filename_field = tk.Entry(self.file_frame)
         self.filename_field.insert(0, 'data.csv')
+        self.headerrows_label = tk.Label(self.file_frame, text='Number of Header Rows')
+        self.headerrows_field = tk.Entry(self.file_frame)
+        self.headerrows_field.insert(0, '1')
+        self.datacolumns_label = tk.Label(self.file_frame, text='Number of Lines to Plot')
+        self.datacolumns_field = tk.Entry(self.file_frame)
+        self.datacolumns_field.insert(0, '1')
 
         self.file_frame.grid(row=0, column=0, sticky=tk.NW)
         self.file_label.grid(row=0, column=0, columnspan=2, sticky=tk.W)
         self.filename_label.grid(row=1, column=0, sticky=tk.W)
-        self.filename_field.grid(row=1, column=1, sticky=tk.E)
+        self.filename_field.grid(row=1, column=1)
+        self.headerrows_label.grid(row=2, column=0, sticky=tk.W)
+        self.headerrows_field.grid(row=2, column=1)
+        self.datacolumns_label.grid(row=3, column=0, sticky=tk.W)
+        self.datacolumns_field.grid(row=3, column=1)
 
         # General Parameters
         self.param_frame = tk.Frame(master)
@@ -130,8 +140,8 @@ class MainApplication:
             text='Generate Plot Preview',
             command=lambda: self.generate_preview())
         self.execution_button = tk.Button(self.execution_frame,
-            text='Generate Animation',
-            command=lambda: self.plotting_execution())
+            text='Generate Frames',
+            command=lambda: self.plotting_execution(master))
 
         self.execution_frame.grid(row=4, column=0, columnspan=3)
         self.preview_button.grid(row=0, column=0, padx=5, pady=5)
@@ -203,6 +213,7 @@ class MainApplication:
         plt.xlabel(self.graphx_field.get(), fontdict=self.font)
         plt.ylabel(self.graphy_field.get(), fontdict=self.font)
         plt.title(self.graphtitle_field.get(), fontdict=self.font)
+        plt.set_cmap('tab10')
         self.ax.set_xlim(0, self.t_domain)
         self.ax.set_ylim(self.find_graphlims(max=np.max(self.ys), min=np.min(self.ys)))
         self.ax.grid()
@@ -210,7 +221,8 @@ class MainApplication:
         # Plotting
         self.animation_time = self.frame_tstep * self.frame
         self.frameindex = int(round(self.animation_time / (self.a_scale * self.t_delta)))
-        self.ax.plot(self.xs[0:self.frameindex], self.ys[0:self.frameindex], 'r', linewidth=3)
+        for i in range(self.datacolumns):
+            self.ax.plot(self.xs[0:self.frameindex], self.ys[0:self.frameindex, i], linewidth=3)
 
         self.fig.savefig('frames/frame_' + title + '.png', dpi=200)
 
@@ -223,14 +235,20 @@ class MainApplication:
 
     # Gather user inputs and get the data ready internally
     def prepare_data(self):
-        self.t_i = float(self.t_start_field.get())
-        self.t_f = float(self.t_end_field.get())
-        self.a_scale = float(self.anim_scale_field.get())
-        self.fr = float(self.framerate_field.get())
-        self.filename = self.filename_field.get()
+        try:
+            self.t_i = float(self.t_start_field.get())
+            self.t_f = float(self.t_end_field.get())
+            self.a_scale = float(self.anim_scale_field.get())
+            self.fr = float(self.framerate_field.get())
+            self.filename = self.filename_field.get()
+            self.headerrows = int(self.headerrows_field.get())
+            self.datacolumns = int(self.datacolumns_field.get())
+        except ValueError:
+            print('Improper input data (put numbers where numbers are supposed to go)')
+            self.execution_button.config(text='Generate Frames', state=tk.NORMAL)
 
         # Load data
-        self.data = np.loadtxt(self.filename, delimiter=',', skiprows=1, usecols=[0, 1])
+        self.data = np.loadtxt(self.filename, delimiter=',', skiprows=self.headerrows)
 
         # Preparing cropped list of x values
         self.t_delta = self.data[1, 0] - self.data[0, 0]
@@ -240,7 +258,7 @@ class MainApplication:
         # Preparing cropped list of y values
         self.t_start_index = int(round((self.t_i - self.data[0, 0]) / self.t_delta))
         self.t_end_index = self.t_start_index + len(self.xs)
-        self.ys = self.data[self.t_start_index:self.t_end_index, 1]
+        self.ys = self.data[self.t_start_index:self.t_end_index, 1:self.datacolumns + 1]
 
         self.num_frames = int(self.t_domain * self.fr * self.a_scale)
         self.frame_tstep = 1. / self.fr  # How much animation-time passes per frame
@@ -251,15 +269,21 @@ class MainApplication:
             print('smoothing with window', self.smoothing_window)
             if self.smoothing_window <= 5:
                 print('warning: small smoothing window')
-            self.ys = signal.savgol_filter(self.ys, window_length=self.smoothing_window, polyorder=3)
+            self.ys = signal.savgol_filter(self.ys,
+                window_length=self.smoothing_window,
+                polyorder=3,
+                axis=0)
 
         if self.run_interpolate.get():
-            f = interpolate.interp1d(self.xs, self.ys, kind='quadratic')
             self.new_xs = np.linspace(0, self.t_domain, num=self.num_frames)
             self.t_delta = self.new_xs[1] - self.new_xs[0]
-            self.new_ys = f(self.new_xs)
+
+            for i in range(self.datacolumns):
+                f = interpolate.interp1d(self.xs, self.ys[:, i], kind='quadratic')
+                self.new_ys = f(self.new_xs)
+                self.ys[:, i] = self.new_ys
+
             self.xs = self.new_xs
-            self.ys = self.new_ys
 
     # Create a preview for the user to evaluate
     def generate_preview(self):
@@ -285,8 +309,10 @@ class MainApplication:
         self.preview_panel.grid(row=1, column=0)
 
     # Generate the animation frames
-    def plotting_execution(self):
-        print('executing plotting')
+    def plotting_execution(self, master):
+
+        self.execution_button.config(text='Generating...', state=tk.DISABLED)
+        master.update()
 
         self.prepare_data()
         self.smooth_and_interp()
@@ -297,6 +323,8 @@ class MainApplication:
 
         for self.frame in range(self.num_frames):
             self.frame_export(str(self.frame))
+
+        self.execution_button.config(text='Generate Frames', state=tk.NORMAL)
 
 
 if __name__ == '__main__':

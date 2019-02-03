@@ -23,5 +23,11 @@ Running timeplot_animator.py should open a GUI. Here's a quick reference:
 - File import preview
 - Export video file directly
 - Handle non-constant time deltas between data points (already does if interpolation is used)
-- Plot more than one line
-- Able to accept excel
+- Graph Legend
+- Secondary Axis
+- Able to accept excel files
+
+### Known issues:
+- Byte order mark at the beginning of some files can mess things up if there are no header rows.
+- If the start or end time are out of bounds, the script doesn't run properly.
+- The window can be hard to close sometimes. Exit button, cmd-Q, etc. don't work. Workaround: use ctrl-C (keyboard interrupt) in the terminal.
