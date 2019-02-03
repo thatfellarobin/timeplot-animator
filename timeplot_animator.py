@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 import os
+import glob
 import numpy as np
 from scipy import interpolate, signal
 import matplotlib
@@ -143,10 +144,14 @@ class MainApplication:
         self.execution_button = tk.Button(self.execution_frame,
             text='Generate Frames',
             command=lambda: self.plotting_execution(master))
+        self.videoexp_button = tk.Button(self.execution_frame,
+            text='Generate Animation\nfrom Existing Frames',
+            command=lambda: self.export_video())
 
         self.execution_frame.grid(row=4, column=0, columnspan=3)
         self.preview_button.grid(row=0, column=0, padx=5, pady=5)
         self.execution_button.grid(row=0, column=1, padx=5, pady=5)
+        self.videoexp_button.grid(row=0, column=2, padx=5, pady=5)
 
         # Some global GUI appearance stuff
         master.grid_columnconfigure(0, weight=0)
@@ -310,14 +315,18 @@ class MainApplication:
         self.preview_panel.grid(row=1, column=0)
 
     def export_video(self):
-        self.framelist = glob.glob('frames/*.png')
-        if not self.framelist:
+        self.fr = float(self.framerate_field.get())
+        self.framelist = sorted(glob.glob('frames/*.png'))  # Sorting currently broken due to how I named my frames
+        print(self.framelist)
+        if len(self.framelist) != 0:
             self.first_frame = Image.open(self.framelist[0])
             print(self.framelist)
             self.fourcc = cv2.VideoWriter_fourcc(*'MP42')
-            self.writer = cv2.VideoWriter('output.avi', fourcc, self.fr, self.first_frame.size, isColor=True)
+            self.writer = cv2.VideoWriter('output.avi', self.fourcc, self.fr, self.first_frame.size, isColor=True)
             for fr in self.framelist:
-                self.writer.write(fr)
+                self.efr = cv2.imread(fr)
+                self.writer.write(self.efr)
+            self.writer.release()
         else:
             print('no video frames in \'frames\' folder!')
 
