@@ -6,6 +6,7 @@ from scipy import interpolate, signal
 import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt  # https://github.com/MTG/sms-tools/issues/36
+import cv2
 
 
 class MainApplication:
@@ -307,6 +308,18 @@ class MainApplication:
         self.preview_panel = tk.Label(self.preview_frame, image=self.preview_image)
 
         self.preview_panel.grid(row=1, column=0)
+
+    def export_video(self):
+        self.framelist = glob.glob('frames/*.png')
+        if not self.framelist:
+            self.first_frame = Image.open(self.framelist[0])
+            print(self.framelist)
+            self.fourcc = cv2.VideoWriter_fourcc(*'MP42')
+            self.writer = cv2.VideoWriter('output.avi', fourcc, self.fr, self.first_frame.size, isColor=True)
+            for fr in self.framelist:
+                self.writer.write(fr)
+        else:
+            print('no video frames in \'frames\' folder!')
 
     # Generate the animation frames
     def plotting_execution(self, master):
