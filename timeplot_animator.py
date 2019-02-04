@@ -316,11 +316,13 @@ class MainApplication:
 
     def export_video(self):
         self.fr = float(self.framerate_field.get())
-        self.framelist = sorted(glob.glob('frames/*.png'))  # Sorting currently broken due to how I named my frames
-        print(self.framelist)
+        self.framelist = glob.glob('frames/*.png')
+        self.framelist = [s.strip('frames/frame_') for s in self.framelist]
+        self.framelist = sorted([int(s.strip('.png')) for s in self.framelist])
+        self.framelist = ['frames/frame_' + str(i) + '.png' for i in self.framelist]
+        # self.framelist = sorted([int(s.strip('frames/frame_')) for s in glob.glob('frames/*.png')])
         if len(self.framelist) != 0:
             self.first_frame = Image.open(self.framelist[0])
-            print(self.framelist)
             self.fourcc = cv2.VideoWriter_fourcc(*'MP42')
             self.writer = cv2.VideoWriter('output.avi', self.fourcc, self.fr, self.first_frame.size, isColor=True)
             for fr in self.framelist:
